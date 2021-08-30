@@ -15,6 +15,12 @@ type Payment struct {
 	SourceAccount string
 }
 
+type Op struct {
+	Destination   string
+	Amount        string
+	SourceAccount string
+}
+
 // BuildXDR for Payment returns a fully configured XDR Operation.
 
 func (p *Payment) BuildXDR(withMuxedAccounts bool) (xdr.Operation, error) {

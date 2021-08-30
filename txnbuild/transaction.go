@@ -15,6 +15,7 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"math"
 	"math/bits"
@@ -195,13 +196,67 @@ func marshallBase64(e xdr.TransactionEnvelope, signatures []xdr.DecoratedSignatu
 // the account authorizing the FeeBumpTransaction will pay for the transaction fees
 // instead of the Transaction's source account.
 type Transaction struct {
-	envelope      xdr.TransactionEnvelope
-	baseFee       int64
-	maxFee        int64
-	sourceAccount SimpleAccount
-	operations    []Operation
-	memo          Memo
-	timebounds    Timebounds
+	envelope      xdr.TransactionEnvelope `json:"envelope"`
+	baseFee       int64                   `json:"baseFee"`
+	maxFee        int64                   `json:"maxFee"`
+	sourceAccount SimpleAccount           `json:"sourceAccount"`
+	operations    []Operation             `json:"operations"`
+	memo          Memo                    `json:"memo"`
+	timebounds    Timebounds              `json:"timebounds"`
+}
+
+func (t Transaction) MarshalJSON() ([]byte, error) {
+	return json.Marshal(map[string]interface{}{
+		"envelope":      t.envelope,
+		"baseFee":       t.baseFee,
+		"maxFee":        t.maxFee,
+		"sourceAccount": t.sourceAccount,
+		"operations":    t.operations,
+		"memo":          t.memo,
+		"timebounds":    t.timebounds,
+	})
+}
+
+type Transaction2 struct {
+	Envelope      xdr.TransactionEnvelope `json:"envelope"`
+	BaseFee       int64                   `json:"baseFee"`
+	MaxFee        int64                   `json:"maxFee"`
+	SourceAccount SimpleAccount           `json:"sourceAccount"`
+	Operations    []Op                    `json:"operations"`
+	Memo          string                  `json:"memo"`
+	Timebounds    Timebounds              `json:"timebounds"`
+}
+
+func (t *Transaction) UnmarshalJSON(data []byte) error {
+	if t == nil {
+		return errors.New("null point exception")
+	}
+	var t2 Transaction2
+	err := json.Unmarshal(data, &t2)
+	if err != nil {
+		return err
+	}
+	t.envelope = t2.Envelope
+	t.baseFee = t2.BaseFee
+	t.maxFee = t2.MaxFee
+	t.sourceAccount = t2.SourceAccount
+	operations := make([]Operation, 0)
+	if len(t2.Operations) > 1 {
+		operations = append(operations, &CreateAccount{
+			SourceAccount: t2.Operations[0].SourceAccount,
+			Destination:   t2.Operations[0].Destination,
+			Amount:        t2.Operations[0].Amount})
+	}
+	operations = append(operations, &Payment{
+		Destination:   t2.Operations[len(t2.Operations)-1].Destination,
+		Amount:        t2.Operations[len(t2.Operations)-1].Amount,
+		Asset:         NativeAsset{},
+		SourceAccount: t2.Operations[len(t2.Operations)-1].SourceAccount,
+	})
+	t.operations = operations
+	t.memo = MemoText(t2.Memo)
+	t.timebounds = t2.Timebounds
+	return nil
 }
 
 // BaseFee returns the per operation fee for this transaction.
@@ -238,6 +293,11 @@ func (t *Transaction) Timebounds() Timebounds {
 // The contents of the returned slice should not be modified.
 func (t *Transaction) Operations() []Operation {
 	return t.operations
+}
+
+func (t *Transaction) SetOperations(operations []Operation) *Transaction {
+	t.operations = operations
+	return t
 }
 
 // Signatures returns the list of signatures attached to this transaction.
