@@ -1,8 +1,8 @@
 package txnbuild
 
 import (
-	"github.com/stellar/go/support/errors"
-	"github.com/stellar/go/xdr"
+	"github.com/aliworkshop/stellar-go/support/errors"
+	"github.com/aliworkshop/stellar-go/xdr"
 )
 
 // AccountMerge represents the Stellar merge account operation. See

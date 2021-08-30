@@ -3,8 +3,8 @@ package horizonclient
 import (
 	"testing"
 
-	"github.com/stellar/go/support/errors"
-	"github.com/stellar/go/support/render/problem"
+	"github.com/aliworkshop/stellar-go/support/errors"
+	"github.com/aliworkshop/stellar-go/support/render/problem"
 	"github.com/stretchr/testify/assert"
 )
 

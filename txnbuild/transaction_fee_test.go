@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/stellar/go/keypair"
+	"github.com/aliworkshop/stellar-go/keypair"
 	"github.com/stretchr/testify/assert"
 )
 

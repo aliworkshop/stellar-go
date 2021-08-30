@@ -5,7 +5,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/stellar/go/xdr"
+	"github.com/aliworkshop/stellar-go/xdr"
 )
 
 type RevokeSponsorshipType int

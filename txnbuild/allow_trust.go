@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/stellar/go/support/errors"
-	"github.com/stellar/go/xdr"
+	"github.com/aliworkshop/stellar-go/support/errors"
+	"github.com/aliworkshop/stellar-go/xdr"
 )
 
 // Deprecated: use SetTrustLineFlags instead.

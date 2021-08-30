@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/stellar/go/xdr"
+	"github.com/aliworkshop/stellar-go/xdr"
 )
 
 func TestRevokeSponsorship(t *testing.T) {

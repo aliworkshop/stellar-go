@@ -3,10 +3,10 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/aliworkshop/stellar-go/clients/horizonclient"
+	demo "github.com/aliworkshop/stellar-go/txnbuild/cmd/demo/operations"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/stellar/go/clients/horizonclient"
-	demo "github.com/stellar/go/txnbuild/cmd/demo/operations"
 )
 
 // resetCmd represents the reset command

@@ -3,7 +3,7 @@ Package txnbuild implements transactions and operations on the Stellar network.
 This library provides an interface to the Stellar transaction model. It supports the building of Go applications on
 top of the Stellar network (https://www.stellar.org/). Transactions constructed by this library may be submitted
 to any Horizon instance for processing onto the ledger, using any Stellar SDK client. The recommended client for Go
-programmers is horizonclient (https://github.com/stellar/go/tree/master/clients/horizonclient). Together, these two
+programmers is horizonclient (https://github.com/aliworkshop/stellar-go/tree/master/clients/horizonclient). Together, these two
 libraries provide a complete Stellar SDK.
 For more information and further examples, see https://www.stellar.org/developers/go/reference/index.html.
 */
@@ -22,11 +22,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/stellar/go/keypair"
-	"github.com/stellar/go/network"
-	"github.com/stellar/go/strkey"
-	"github.com/stellar/go/support/errors"
-	"github.com/stellar/go/xdr"
+	"github.com/aliworkshop/stellar-go/keypair"
+	"github.com/aliworkshop/stellar-go/network"
+	"github.com/aliworkshop/stellar-go/strkey"
+	"github.com/aliworkshop/stellar-go/support/errors"
+	"github.com/aliworkshop/stellar-go/xdr"
 )
 
 // MinBaseFee is the minimum transaction fee for the Stellar network of 100 stroops (0.00001 XLM).

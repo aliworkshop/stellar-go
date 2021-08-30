@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"net/url"
 
-	hProtocol "github.com/stellar/go/protocols/horizon"
-	"github.com/stellar/go/support/errors"
+	hProtocol "github.com/aliworkshop/stellar-go/protocols/horizon"
+	"github.com/aliworkshop/stellar-go/support/errors"
 )
 
 // BuildURL creates the endpoint to be queried based on the data in the OrderBookRequest struct.

@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/stellar/go/clients/horizonclient"
-	"github.com/stellar/go/keypair"
-	"github.com/stellar/go/network"
-	hProtocol "github.com/stellar/go/protocols/horizon"
-	"github.com/stellar/go/protocols/horizon/effects"
-	"github.com/stellar/go/protocols/horizon/operations"
-	"github.com/stellar/go/txnbuild"
+	"github.com/aliworkshop/stellar-go/clients/horizonclient"
+	"github.com/aliworkshop/stellar-go/keypair"
+	"github.com/aliworkshop/stellar-go/network"
+	hProtocol "github.com/aliworkshop/stellar-go/protocols/horizon"
+	"github.com/aliworkshop/stellar-go/protocols/horizon/effects"
+	"github.com/aliworkshop/stellar-go/protocols/horizon/operations"
+	"github.com/aliworkshop/stellar-go/txnbuild"
 )
 
 func ExampleClient_Accounts() {

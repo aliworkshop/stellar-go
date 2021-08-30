@@ -18,12 +18,12 @@ import (
 	"sync"
 	"time"
 
-	hProtocol "github.com/stellar/go/protocols/horizon"
-	"github.com/stellar/go/protocols/horizon/effects"
-	"github.com/stellar/go/protocols/horizon/operations"
-	"github.com/stellar/go/support/clock"
-	"github.com/stellar/go/support/render/problem"
-	"github.com/stellar/go/txnbuild"
+	hProtocol "github.com/aliworkshop/stellar-go/protocols/horizon"
+	"github.com/aliworkshop/stellar-go/protocols/horizon/effects"
+	"github.com/aliworkshop/stellar-go/protocols/horizon/operations"
+	"github.com/aliworkshop/stellar-go/support/clock"
+	"github.com/aliworkshop/stellar-go/support/render/problem"
+	"github.com/aliworkshop/stellar-go/txnbuild"
 )
 
 // cursor represents `cursor` param in queries

@@ -1,7 +1,7 @@
 package horizonclient
 
 import (
-	"github.com/stellar/go/support/errors"
+	"github.com/aliworkshop/stellar-go/support/errors"
 	"net/http"
 )
 

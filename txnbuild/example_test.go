@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/stellar/go/keypair"
-	"github.com/stellar/go/network"
-	horizonclient "github.com/stellar/go/txnbuild/examplehorizonclient"
+	"github.com/aliworkshop/stellar-go/keypair"
+	"github.com/aliworkshop/stellar-go/network"
+	horizonclient "github.com/aliworkshop/stellar-go/txnbuild/examplehorizonclient"
 )
 
 func ExampleInflation() {
