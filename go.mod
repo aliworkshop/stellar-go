@@ -1,4 +1,4 @@
-module github.com/stellar/go
+module github.com/aliworkshop/stellar-go
 
 go 1.16
 
