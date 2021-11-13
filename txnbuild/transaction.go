@@ -196,13 +196,14 @@ func marshallBase64(e xdr.TransactionEnvelope, signatures []xdr.DecoratedSignatu
 // the account authorizing the FeeBumpTransaction will pay for the transaction fees
 // instead of the Transaction's source account.
 type Transaction struct {
-	envelope      xdr.TransactionEnvelope `json:"envelope"`
-	baseFee       int64                   `json:"baseFee"`
-	maxFee        int64                   `json:"maxFee"`
-	sourceAccount SimpleAccount           `json:"sourceAccount"`
-	operations    []Operation             `json:"operations"`
-	memo          Memo                    `json:"memo"`
-	timebounds    Timebounds              `json:"timebounds"`
+	envelope         xdr.TransactionEnvelope `json:"envelope"`
+	baseFee          int64                   `json:"baseFee"`
+	maxFee           int64                   `json:"maxFee"`
+	sourceAccount    SimpleAccount           `json:"sourceAccount"`
+	operations       []Operation             `json:"operations"`
+	memo             Memo                    `json:"memo"`
+	timebounds       Timebounds              `json:"timebounds"`
+	firstTransaction bool                    `json:"first_transaction"`
 }
 
 func (t Transaction) MarshalJSON() ([]byte, error) {
@@ -240,19 +241,20 @@ func (t *Transaction) UnmarshalJSON(data []byte) error {
 	t.baseFee = t2.BaseFee
 	t.maxFee = t2.MaxFee
 	t.sourceAccount = t2.SourceAccount
-	operations := make([]Operation, 0)
-	if len(t2.Operations) > 1 {
-		operations = append(operations, &CreateAccount{
+	operations := make([]Operation, 1)
+	if t.firstTransaction {
+		operations[0] = &CreateAccount{
 			SourceAccount: t2.Operations[0].SourceAccount,
 			Destination:   t2.Operations[0].Destination,
-			Amount:        t2.Operations[0].Amount})
+			Amount:        t2.Operations[0].Amount}
+	} else {
+		operations[0] = &Payment{
+			Destination:   t2.Operations[0].Destination,
+			Amount:        t2.Operations[0].Amount,
+			Asset:         NativeAsset{},
+			SourceAccount: t2.Operations[0].SourceAccount,
+		}
 	}
-	operations = append(operations, &Payment{
-		Destination:   t2.Operations[len(t2.Operations)-1].Destination,
-		Amount:        t2.Operations[len(t2.Operations)-1].Amount,
-		Asset:         NativeAsset{},
-		SourceAccount: t2.Operations[len(t2.Operations)-1].SourceAccount,
-	})
 	t.operations = operations
 	t.memo = MemoText(t2.Memo)
 	t.timebounds = t2.Timebounds
@@ -714,13 +716,14 @@ func transactionFromParsedXDR(xdrEnv xdr.TransactionEnvelope, withMuxedAccounts 
 // TransactionParams is a container for parameters
 // which are used to construct new Transaction instances
 type TransactionParams struct {
-	SourceAccount        Account
-	IncrementSequenceNum bool
-	Operations           []Operation
-	BaseFee              int64
-	Memo                 Memo
-	Timebounds           Timebounds
-	EnableMuxedAccounts  bool
+	SourceAccount         Account
+	IncrementSequenceNum  bool
+	Operations            []Operation
+	BaseFee               int64
+	Memo                  Memo
+	Timebounds            Timebounds
+	EnableMuxedAccounts   bool
+	DestinationMustActive bool
 }
 
 // NewTransaction returns a new Transaction instance
@@ -747,9 +750,13 @@ func NewTransaction(params TransactionParams) (*Transaction, error) {
 			AccountID: params.SourceAccount.GetAccountID(),
 			Sequence:  sequence,
 		},
-		operations: params.Operations,
-		memo:       params.Memo,
-		timebounds: params.Timebounds,
+		operations:       params.Operations,
+		memo:             params.Memo,
+		timebounds:       params.Timebounds,
+		firstTransaction: false,
+	}
+	if params.DestinationMustActive {
+		tx.firstTransaction = true
 	}
 	var sourceAccount xdr.MuxedAccount
 	if params.EnableMuxedAccounts {
